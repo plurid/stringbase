@@ -16,8 +16,14 @@
 
 // #region module
 class Stringbase {
+    // storing add the data to the unstored map
+    // periodically, the unstored map is saved to file
+    // obliterating adds the entity to destored
+    // periodically, the destored is cleared from the file
+
     private options: StringbaseOptions;
     private unstored: Map<any, any> = new Map();
+    private destored: Map<any, any> = new Map();
 
 
     constructor(
@@ -63,6 +69,7 @@ class Stringbase {
         const resolvedOptions: StringbaseOptions = {
             ...options,
             filepath: options?.filepath || stringbaseDefaultPath,
+            cache: options?.cache || 'in-memory-all',
         };
 
         return resolvedOptions;
