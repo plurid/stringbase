@@ -37,6 +37,8 @@ const cli = {
     external: [
         '@plurid/deon',
         'commander',
+        'os',
+        'path',
     ],
     plugins: [
         ...common.plugins,
