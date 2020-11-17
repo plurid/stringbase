@@ -17,6 +17,7 @@
 // #region module
 class Stringbase {
     private options: StringbaseOptions;
+    private unstored: WeakMap<any, any> = new WeakMap();
 
 
     constructor(
@@ -36,7 +37,10 @@ class Stringbase {
         entity: string,
         data: any,
     ) {
-
+        this.storeBatch(
+            entity,
+            data,
+        );
     }
 
     public async obliterate(
@@ -57,6 +61,19 @@ class Stringbase {
         };
 
         return resolvedOptions;
+    }
+
+    private storeBatch(
+        entity: string,
+        data: any,
+    ) {
+        const current = this.unstored[entity];
+
+        if (!current) {
+            // add new data
+        }
+
+        // merge data
     }
 }
 // #endregion module
