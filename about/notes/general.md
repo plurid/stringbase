@@ -88,3 +88,30 @@ dynamic locators can be used, instead of the value, another key based can be use
 
     records
         . id!:123   - not equal
+
+
+
+cursor handling
+
+
+    records
+        . ownedBy:123
+
+    // gets all the records of owner 123
+
+    which is tantamount to
+
+    records
+        . ownedBy:123 |all|
+
+
+    records
+        . ownedBy:123 |first 5|
+
+    // gets the first 5 records of owner 123
+
+
+    records
+        . ownedBy:123 |last 5|
+
+    // gets the last 5 records of owner 123
