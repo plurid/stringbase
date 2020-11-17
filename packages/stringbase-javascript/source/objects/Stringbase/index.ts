@@ -46,10 +46,42 @@ class Stringbase {
     public async get(
         locator: string,
     ) {
-        const parsedLocator = parseLocator(locator);
-        console.log('parsedLocator', parsedLocator);
+        if (this.unstored.has(locator)) {
+            return this.unstored.get(locator);
+        }
 
-        return this.unstored;
+        console.log('this.unstored', this.unstored);
+
+        const parsedLocator = parseLocator(locator);
+
+        let value: any;
+        for (const locator of parsedLocator) {
+            switch (locator.type) {
+                case 'collection': {
+                    value = this.unstored.get(locator.value);
+                    break;
+                }
+                case 'document': {
+                    let temporary: any;
+
+                    if (Array.isArray(value)) {
+                        for (const element of value) {
+                            if (element[locator.key] === locator.value) {
+                                temporary = element;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (temporary) {
+                        value = temporary;
+                    }
+                    break;
+                }
+            }
+        }
+
+        return value;
     }
 
     public async store(
@@ -87,13 +119,16 @@ class Stringbase {
         locator: string,
         data: any,
     ) {
+        const parsedLocator = parseLocator(locator);
+        console.log('parsedLocator', parsedLocator);
+
         const current = this.unstored.get(locator);
 
         if (!current) {
             // add new data
             this.unstored.set(
                 locator,
-                data,
+                [data],
             );
             return;
         }
