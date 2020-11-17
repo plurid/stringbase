@@ -1,3 +1,3 @@
-export {
-
-};
+export interface StringbaseOptions {
+    typer?: any;
+}
