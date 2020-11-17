@@ -17,11 +17,11 @@
 // #region module
 class Stringbase {
     private options: StringbaseOptions;
-    private unstored: WeakMap<any, any> = new WeakMap();
+    private unstored: Map<any, any> = new Map();
 
 
     constructor(
-        options: Partial<StringbaseOptions>,
+        options?: Partial<StringbaseOptions>,
     ) {
         this.options = this.resolveOptions(
             options,
@@ -30,7 +30,12 @@ class Stringbase {
 
 
     public async initialize() {
+    }
 
+    public async get(
+        entity: string,
+    ) {
+        return this.unstored;
     }
 
     public async store(
@@ -53,11 +58,11 @@ class Stringbase {
 
 
     private resolveOptions(
-        options: Partial<StringbaseOptions>,
+        options?: Partial<StringbaseOptions>,
     ) {
         const resolvedOptions: StringbaseOptions = {
             ...options,
-            filepath: options.filepath || stringbaseDefaultPath,
+            filepath: options?.filepath || stringbaseDefaultPath,
         };
 
         return resolvedOptions;
@@ -67,13 +72,30 @@ class Stringbase {
         entity: string,
         data: any,
     ) {
-        const current = this.unstored[entity];
+        const current = this.unstored.get(entity);
 
         if (!current) {
             // add new data
+            this.unstored.set(
+                entity,
+                data,
+            );
+            return;
         }
 
         // merge data
+        const update = [
+            current,
+            data,
+        ];
+        this.unstored.set(
+            entity,
+            update,
+        );
+    }
+
+    private recordBatch() {
+
     }
 }
 // #endregion module
