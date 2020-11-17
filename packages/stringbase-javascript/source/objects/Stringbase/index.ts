@@ -1,7 +1,15 @@
 // #region imports
+    // #region external
     import {
         StringbaseOptions,
     } from '#data/interfaces';
+
+    import {
+        stringbaseDefaultPath,
+    } from '#data/constants';
+
+    import * as optionsLogic from '#services/logic/options';
+    // #endregion external
 // #endregion imports
 
 
@@ -14,15 +22,41 @@ class Stringbase {
     constructor(
         options: Partial<StringbaseOptions>,
     ) {
-        this.options = options;
+        this.options = this.resolveOptions(
+            options,
+        );
     }
 
 
-    public store(
+    public async initialize() {
+
+    }
+
+    public async store(
         entity: string,
         data: any,
     ) {
 
+    }
+
+    public async obliterate(
+        entity: string,
+        field: string,
+        value: any,
+    ) {
+
+    }
+
+
+    private resolveOptions(
+        options: Partial<StringbaseOptions>,
+    ) {
+        const resolvedOptions: StringbaseOptions = {
+            ...options,
+            filepath: options.filepath || stringbaseDefaultPath,
+        };
+
+        return resolvedOptions;
     }
 }
 // #endregion module
