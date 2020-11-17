@@ -115,3 +115,15 @@ cursor handling
         . ownedBy:123 |last 5|
 
     // gets the last 5 records of owner 123
+
+
+    records
+        . ownedBy:123 |5 above 456|
+
+    // gets 5 records above the cursor id 456
+
+
+    records
+        . ownedBy:123 |5 below 456|
+
+    // gets 5 records below the cursor id 456
