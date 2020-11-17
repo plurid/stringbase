@@ -9,6 +9,10 @@
     } from '#data/constants';
 
     import * as optionsLogic from '#services/logic/options';
+
+    import {
+        parseLocator,
+    } from '#services/utilities/locator';
     // #endregion external
 // #endregion imports
 
@@ -40,17 +44,20 @@ class Stringbase {
     }
 
     public async get(
-        entity: string,
+        locator: string,
     ) {
+        const parsedLocator = parseLocator(locator);
+        console.log('parsedLocator', parsedLocator);
+
         return this.unstored;
     }
 
     public async store(
-        entity: string,
+        locator: string,
         data: any,
     ) {
         this.storeBatch(
-            entity,
+            locator,
             data,
         );
     }
@@ -77,15 +84,15 @@ class Stringbase {
     }
 
     private storeBatch(
-        entity: string,
+        locator: string,
         data: any,
     ) {
-        const current = this.unstored.get(entity);
+        const current = this.unstored.get(locator);
 
         if (!current) {
             // add new data
             this.unstored.set(
-                entity,
+                locator,
                 data,
             );
             return;
@@ -97,7 +104,7 @@ class Stringbase {
             data,
         ];
         this.unstored.set(
-            entity,
+            locator,
             update,
         );
     }
