@@ -32,5 +32,30 @@ describe('Stringbase', () => {
 
         expect(true).toBeTruthy();
     });
+
+
+
+    it.only(`simple`, async () => {
+        const stringbase = await getStringbase();
+
+        await stringbase.store(
+            'records',
+            {
+                some: 'record',
+            },
+        );
+
+        await stringbase.store(
+            'records',
+            {
+                another: 'record',
+            },
+        );
+
+        const data = await stringbase.get('records.another:record');
+        console.log('data', data);
+
+        expect(true).toBeTruthy();
+    });
 });
 // #endregion module

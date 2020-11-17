@@ -24,6 +24,7 @@ class Stringbase {
     private options: StringbaseOptions;
     private unstored: Map<any, any> = new Map();
     private destored: Map<any, any> = new Map();
+    private cache: Map<any, any> = new Map();
 
 
     constructor(
