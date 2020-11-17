@@ -35,7 +35,7 @@
     ],
     "preferGlobal": true,
     "scripts": {
-        "test": "jest -c ./configurations/jest.config.js --coverage ./source",
+        "test": "jest -c ./configurations/jest.config.js --coverage --verbose  ./source",
         "start": "rollup -c ./scripts/rollup.config.ts -w",
         "build.removeTests": "rm -rf `find ./distribution/ -type d -name __tests__`",
         "build.development": "rollup -c ./scripts/rollup.config.ts && yarn build.removeTests",
