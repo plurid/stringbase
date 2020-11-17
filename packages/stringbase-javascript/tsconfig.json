@@ -29,37 +29,6 @@
             "#services/*": [
                 "./source/services/*"
             ],
-
-            "#client/*": [
-                "./source/objects/Dashboard/client/*"
-            ],
-            "#server/*": [
-                "./source/objects/Dashboard/server/*"
-            ],
-            "#kernel-assets/*": [
-                "./source/objects/Dashboard/shared/kernel/assets/*"
-            ],
-            "#kernel-components/*": [
-                "./source/objects/Dashboard/shared/kernel/components/*"
-            ],
-            "#kernel-containers/*": [
-                "./source/objects/Dashboard/shared/kernel/containers/*"
-            ],
-            "#kernel-planes/*": [
-                "./source/objects/Dashboard/shared/kernel/planes/*"
-            ],
-            "#kernel-data/*": [
-                "./source/objects/Dashboard/shared/kernel/data/*"
-            ],
-            "#kernel-services/*": [
-                "./source/objects/Dashboard/shared/kernel/services/*"
-            ],
-            "#routes/*": [
-                "./source/objects/Dashboard/shared/routes/*"
-            ],
-            "#shell/*": [
-                "./source/objects/Dashboard/shared/shell/*"
-            ]
         },
 
 
