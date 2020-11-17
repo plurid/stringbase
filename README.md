@@ -15,12 +15,12 @@
 
 
 <h3 align="center">
-    Human-Readable Database Based on [`Deon`](https://github.com/plurid/deon)
+    Human-Readable Database Based on Deon
 </h3>
 
 
 
-`stringbase` is a database in a `.deon` file.
+`stringbase` is a database in a [`.deon`](https://github.com/plurid/deon) file.
 
 ### Contents
 
