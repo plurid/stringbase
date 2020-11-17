@@ -1,28 +1,13 @@
+import base from https://raw.githubusercontent.com/plurid/joiner/master/packages/joiner-data/values/base.deon
+
+
+
 {
+    ...#base
     #packages
-    #package
-    #commit
-    yarnWorkspace false
-    runFrom ../
 }
 
 
 packages [
     './packages/*'
 ]
-
-package {
-    manager yarn
-    publisher npm
-}
-
-yarnWorkspace false
-
-commit {
-    engine git
-    combine true
-    root ''
-    fullFolder false
-    divider ' > '
-    message setup: package
-}
