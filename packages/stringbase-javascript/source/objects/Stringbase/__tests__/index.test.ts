@@ -59,7 +59,7 @@ describe('Stringbase', () => {
 
 
 
-    it.only(`simple`, async () => {
+    it(`simple`, async () => {
         const stringbase = await getStringbase();
 
         await stringbase.store(
@@ -79,6 +79,31 @@ describe('Stringbase', () => {
 
         const data = await stringbase.get('records.some:record.comments.value:comment');
         console.log('data', data);
+
+        // expect(data.another).toEqual('value');
+    });
+
+
+    it.only(`simple`, async () => {
+        const stringbase = await getStringbase();
+
+        const data = await stringbase.get(`
+            records
+                . some:record
+                    . comments
+                        . value:comment
+        `);
+        console.log('data', data);
+
+        const data2 = await stringbase.get(`
+            records
+            . {
+                notifyAt
+                .events
+                .login
+            } : true
+        `);
+        console.log('data2', data2);
 
         // expect(data.another).toEqual('value');
     });

@@ -53,6 +53,7 @@ class Stringbase {
         console.log('this.unstored', this.unstored);
 
         const parsedLocator = parseLocator(locator);
+        console.log('parsedLocator', parsedLocator);
 
         let value: any;
         for (const locator of parsedLocator) {

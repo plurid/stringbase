@@ -14,7 +14,10 @@
 const parseLocator = (
     value: string,
 ) => {
-    const elements = value.split('.');
+    const re = new RegExp('\\s*', 'g');
+    const cleanValue = value.replace(re, '');
+
+    const elements = cleanValue.split('.');
 
     const locator: Locator[] = [];
 
