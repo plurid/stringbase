@@ -11,6 +11,19 @@
 
 
 // #region module
+const elementIsDocument = (
+    value: string,
+) => {
+    if (
+        !value.includes(':')
+    ) {
+        return false;
+    }
+
+    return true;
+}
+
+
 const parseLocator = (
     value: string,
 ) => {
@@ -22,7 +35,7 @@ const parseLocator = (
     const locator: Locator[] = [];
 
     for (const element of elements) {
-        if (element.includes(':')) {
+        if (elementIsDocument(element)) {
             const split = element.split(':');
             const key = split[0];
             const value = split[1];
