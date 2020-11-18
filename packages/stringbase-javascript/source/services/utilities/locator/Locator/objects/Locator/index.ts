@@ -29,14 +29,12 @@ class Locator {
     public parse(
         data: string,
     ) {
-        return data as any;
-
-        // const scanner = new Scanner(
-        //     data,
-        //     this.error,
-        // );
-        // const tokens = scanner.scanTokens();
-        // // console.log('tokens', tokens);
+        const scanner = new Scanner(
+            data,
+            this.error,
+        );
+        const tokens = scanner.scanTokens();
+        console.log('tokens', tokens);
 
         // const parser = new Parser(
         //     tokens,
@@ -66,6 +64,8 @@ class Locator {
         // );
 
         // return interpretedData;
+
+        return data as any;
     }
 
     /**

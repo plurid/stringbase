@@ -7,6 +7,8 @@ export enum TokenType {
 
 
     // Entities.
+    SIGNIFIER,
+
     COLLECTION,
     DOCUMENT,
     CURSOR,

@@ -1,8 +1,8 @@
 // #region imports
     // #region external
-    // import {
-    //     nonAlphanumericCharacters,
-    // } from '../../data/constants';
+    import {
+        nonAlphanumericCharacters,
+    } from '../../data/constants';
 
     import {
         TokenType,
@@ -177,20 +177,22 @@ class Scanner {
     }
 
     private signifier() {
-        // while (
-        //     this.isAlphaNumeric(this.peek())
-        //     && !this.isAtEnd()
-        // ) {
-        //     this.advance();
-        // }
+        while (
+            this.isAlphaNumeric(this.peek())
+            && !this.isAtEnd()
+        ) {
+            this.advance();
+        }
 
-        // // See if the signifier is a reserved word.
-        // const text = this.source.substring(this.start, this.current);
-        // let type = this.keywords[text];
+        // See if the signifier is a reserved word.
+        const text = this.source.substring(this.start, this.current);
+        console.log("text", text);
 
-        // if (!type) {
-        //     type = TokenType.SIGNIFIER;
-        // }
+        let type = this.keywords[text];
+
+        if (!type) {
+            type = TokenType.SIGNIFIER;
+        }
 
         // switch (type) {
         //     case TokenType.IMPORT: {
@@ -247,7 +249,7 @@ class Scanner {
         //     }
         // }
 
-        // this.addToken(type);
+        this.addToken(type);
     }
 
     private endScan() {
@@ -330,8 +332,7 @@ class Scanner {
     private isAlphaNumeric(
         c: string,
     ) {
-        return false;
-        // return !nonAlphanumericCharacters.includes(c);
+        return !nonAlphanumericCharacters.includes(c);
     }
 
     private isAtEnd() {
