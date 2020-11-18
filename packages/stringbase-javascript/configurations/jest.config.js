@@ -18,11 +18,11 @@ module.exports = {
         'source',
     ],
     moduleNameMapper: {
-        "cli/(.*)": "<rootDir>/source/cli/$1",
-        "commands/(.*)": "<rootDir>/source/commands/$1",
-        "data/(.*)": "<rootDir>/source/data/$1",
-        "objects/(.*)": "<rootDir>/source/objects/$1",
-        "services/(.*)": "<rootDir>/source/services/$1",
+        "#cli/(.*)": "<rootDir>/source/cli/$1",
+        "#commands/(.*)": "<rootDir>/source/commands/$1",
+        "#data/(.*)": "<rootDir>/source/data/$1",
+        "#objects/(.*)": "<rootDir>/source/objects/$1",
+        "#services/(.*)": "<rootDir>/source/services/$1",
     },
     collectCoverage: true,
     coveragePathIgnorePatterns: [
