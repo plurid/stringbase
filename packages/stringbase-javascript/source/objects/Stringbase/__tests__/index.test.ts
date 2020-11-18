@@ -22,12 +22,12 @@ describe('Stringbase', () => {
     it(`simple`, async () => {
         const stringbase = await getStringbase();
 
-        await stringbase.store(
+        await stringbase.write(
             'one',
             'data',
         );
 
-        const data = await stringbase.get('one');
+        const data = await stringbase.read('one');
         console.log('data', data);
 
         expect(true).toBeTruthy();
@@ -38,21 +38,21 @@ describe('Stringbase', () => {
     it(`simple`, async () => {
         const stringbase = await getStringbase();
 
-        await stringbase.store(
+        await stringbase.write(
             'records',
             {
                 some: 'record',
             },
         );
 
-        await stringbase.store(
+        await stringbase.write(
             'records',
             {
                 another: 'record',
             },
         );
 
-        const data = await stringbase.get('records.another:record');
+        const data = await stringbase.read('records.another:record');
 
         expect(data.another).toEqual('record');
     });
@@ -62,14 +62,14 @@ describe('Stringbase', () => {
     it(`simple`, async () => {
         const stringbase = await getStringbase();
 
-        await stringbase.store(
+        await stringbase.write(
             'records',
             {
                 some: 'record',
             },
         );
 
-        await stringbase.store(
+        await stringbase.write(
             'records.some:record.comments',
             {
                 value: 'comment',
@@ -77,7 +77,7 @@ describe('Stringbase', () => {
             },
         );
 
-        const data = await stringbase.get('records.some:record.comments.value:comment');
+        const data = await stringbase.read('records.some:record.comments.value:comment');
         console.log('data', data);
 
         // expect(data.another).toEqual('value');
@@ -87,7 +87,7 @@ describe('Stringbase', () => {
     it.only(`simple`, async () => {
         const stringbase = await getStringbase();
 
-        const data = await stringbase.get(`
+        const data = await stringbase.read(`
             records
                 . some:record
                     . comments
@@ -95,7 +95,7 @@ describe('Stringbase', () => {
         `);
         console.log('data', data);
 
-        const data2 = await stringbase.get(`
+        const data2 = await stringbase.read(`
             records
             . {
                 notifyAt

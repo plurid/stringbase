@@ -43,7 +43,12 @@ class Stringbase {
     public async initialize() {
     }
 
-    public async get(
+    /**
+     * Based on the `locator` read the data.
+     *
+     * @param locator
+     */
+    public async read(
         locator: string,
     ) {
         if (this.unstored.has(locator)) {
@@ -85,7 +90,17 @@ class Stringbase {
         return value;
     }
 
-    public async store(
+    /**
+     * `write` data based on the `locator`.
+     *
+     * If the `locator` targets a specific `document` the `data` will be updated in-place.
+     *
+     * If the `locator` is a collection, and `data` is a list, multiple `documents` will be inserted.
+     *
+     * @param locator
+     * @param data
+     */
+    public async write(
         locator: string,
         data: any,
     ) {
