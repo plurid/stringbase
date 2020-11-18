@@ -1,63 +1,19 @@
 // #region imports
-    // #region external
-    import {
-        Locator,
-        LocatorDocument,
-        LocatorCollection,
-    } from '#data/interfaces';
-    // #endregion external
+    // #region internal
+    import Locator from './Locator';
+    // #endregion internal
 // #endregion imports
 
 
 
 // #region module
-const elementIsDocument = (
-    value: string,
-) => {
-    if (
-        !value.includes(':')
-    ) {
-        return false;
-    }
-
-    return true;
-}
-
-
 const parseLocator = (
     value: string,
 ) => {
-    const re = new RegExp('\\s*', 'g');
-    const cleanValue = value.replace(re, '');
+    const locator = new Locator();
+    const data = locator.parse(value);
 
-    const elements = cleanValue.split('.');
-
-    const locator: Locator[] = [];
-
-    for (const element of elements) {
-        if (elementIsDocument(element)) {
-            const split = element.split(':');
-            const key = split[0];
-            const value = split[1];
-
-            const data: LocatorDocument = {
-                type: 'document',
-                key,
-                value,
-            };
-            locator.push(data);
-
-            continue;
-        }
-
-        const data: LocatorCollection = {
-            type: 'collection',
-            value: element,
-        };
-        locator.push(data);
-    }
-
-    return locator;
+    return data;
 }
 // #endregion module
 
