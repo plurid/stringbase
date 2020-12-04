@@ -22,15 +22,18 @@
 
 `stringbase` is a database in a [`.deon`](https://github.com/plurid/deon) file.
 
+
 ### Contents
 
 + [About](#about)
 + [Packages](#packages)
++ [Codeophon](#codeophon)
 
 
 
 ## About
 
+`stringbase` uses [`loque`](https://github.com/plurid/loque) to locate, extract, update data stored in a `.deon` file.
 
 
 
@@ -44,3 +47,10 @@
 [@plurid/stringbase-javascript][stringbase-javascript] • the `JavaScript`/`TypeScript` implementation
 
 [stringbase-javascript]: https://github.com/plurid/stringbase/tree/master/packages/stringbase-javascript
+
+
+
+## [Codeophon](https://github.com/ly3xqhl8g9/codeophon)
+
++ licensing: [delicense](https://github.com/ly3xqhl8g9/delicense)
++ versioning: [αver](https://github.com/ly3xqhl8g9/alpha-versioning)
