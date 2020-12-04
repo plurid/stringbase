@@ -1,6 +1,6 @@
 {
     "name": "@plurid/stringbase",
-    "version": "0.0.0",
+    "version": "0.0.0-0",
     "description": "Human-Readable Database Based on Deon",
     "keywords": [
         "database",
@@ -21,7 +21,8 @@
         "access": "public"
     },
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=12",
+        "npm": ">=6"
     },
     "main": "distribution/index.js",
     "module": "distribution/index.es.js",
@@ -45,21 +46,22 @@
         "prepublishOnly": "yarn build"
     },
     "dependencies": {
-        "@plurid/deon": "^0.0.41",
+        "@plurid/deon": "^0.0.0-0",
+        "@plurid/loque": "^0.0.0-0",
         "commander": "^6.2.0"
     },
     "devDependencies": {
-        "@rollup/plugin-commonjs": "^16.0.0",
+        "@rollup/plugin-commonjs": "^17.0.0",
         "@rollup/plugin-json": "^4.1.0",
-        "@types/node": "^14.14.7",
-        "@typescript-eslint/eslint-plugin": "^4.8.1",
-        "@typescript-eslint/parser": "^4.8.1",
-        "eslint": "^7.13.0",
+        "@types/node": "^14.14.10",
+        "@typescript-eslint/eslint-plugin": "^4.9.0",
+        "@typescript-eslint/parser": "^4.9.0",
+        "eslint": "^7.14.0",
         "jest": "^26.6.3",
-        "rollup": "^2.33.2",
+        "rollup": "^2.34.1",
         "rollup-plugin-typescript2": "^0.29.0",
         "ts-jest": "^26.4.4",
-        "ts-node": "^9.0.0",
-        "typescript": "^4.0.5"
+        "ts-node": "^9.1.0",
+        "typescript": "^4.1.2"
     }
 }
