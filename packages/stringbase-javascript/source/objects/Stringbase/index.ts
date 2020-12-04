@@ -1,4 +1,9 @@
 // #region imports
+    // #region libraries
+    import loque from '@plurid/loque';
+    // #endregion libraries
+
+
     // #region external
     import {
         StringbaseOptions,
@@ -29,6 +34,7 @@ class Stringbase {
     private unstored: Map<any, any> = new Map();
     private destored: Map<any, any> = new Map();
     private cache: Map<any, any> = new Map();
+    private data: any = {};
 
 
     constructor(
@@ -51,43 +57,50 @@ class Stringbase {
     public async read(
         locator: string,
     ) {
-        if (this.unstored.has(locator)) {
-            return this.unstored.get(locator);
-        }
+        const extract = loque.extract<any, any>(
+            locator,
+            this.data,
+        );
 
-        console.log('this.unstored', this.unstored);
+        return extract.data;
 
-        const parsedLocator = parseLocator(locator);
-        console.log('parsedLocator', parsedLocator);
+        // if (this.unstored.has(locator)) {
+        //     return this.unstored.get(locator);
+        // }
 
-        let value: any;
-        for (const locator of parsedLocator) {
-            switch (locator.type) {
-                case 'collection': {
-                    value = this.unstored.get(locator.value);
-                    break;
-                }
-                case 'document': {
-                    let temporary: any;
+        // console.log('this.unstored', this.unstored);
 
-                    if (Array.isArray(value)) {
-                        for (const element of value) {
-                            if (element[locator.key] === locator.value) {
-                                temporary = element;
-                                break;
-                            }
-                        }
-                    }
+        // const parsedLocator = parseLocator(locator);
+        // console.log('parsedLocator', parsedLocator);
 
-                    if (temporary) {
-                        value = temporary;
-                    }
-                    break;
-                }
-            }
-        }
+        // let value: any;
+        // for (const locator of parsedLocator) {
+        //     switch (locator.type) {
+        //         case 'collection': {
+        //             value = this.unstored.get(locator.value);
+        //             break;
+        //         }
+        //         case 'document': {
+        //             let temporary: any;
 
-        return value;
+        //             if (Array.isArray(value)) {
+        //                 for (const element of value) {
+        //                     if (element[locator.key] === locator.value) {
+        //                         temporary = element;
+        //                         break;
+        //                     }
+        //                 }
+        //             }
+
+        //             if (temporary) {
+        //                 value = temporary;
+        //             }
+        //             break;
+        //         }
+        //     }
+        // }
+
+        // return value;
     }
 
     /**
@@ -135,29 +148,37 @@ class Stringbase {
         locator: string,
         data: any,
     ) {
-        const parsedLocator = parseLocator(locator);
-        console.log('parsedLocator', parsedLocator);
-
-        const current = this.unstored.get(locator);
-
-        if (!current) {
-            // add new data
-            this.unstored.set(
-                locator,
-                [data],
-            );
-            return;
-        }
-
-        // merge data
-        const update = [
-            current,
-            data,
-        ];
-        this.unstored.set(
+        const newData = loque.update(
             locator,
-            update,
+            this.data,
+            data,
         );
+
+        this.data = newData;
+
+        // const parsedLocator = parseLocator(locator);
+        // console.log('parsedLocator', parsedLocator);
+
+        // const current = this.unstored.get(locator);
+
+        // if (!current) {
+        //     // add new data
+        //     this.unstored.set(
+        //         locator,
+        //         [data],
+        //     );
+        //     return;
+        // }
+
+        // // merge data
+        // const update = [
+        //     current,
+        //     data,
+        // ];
+        // this.unstored.set(
+        //     locator,
+        //     update,
+        // );
     }
 
     private recordBatch() {
