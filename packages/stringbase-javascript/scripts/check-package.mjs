@@ -26,6 +26,7 @@ try {
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import Stringbase, { Stringbase as Named, query, field, literal, eq } from '@plurid/stringbase';
+import { Workspace, createAgentTools } from '@plurid/stringbase/agent';
 const require = createRequire(import.meta.url);
 const cjs = require('@plurid/stringbase');
 assert.equal(Stringbase, Named);
@@ -39,6 +40,20 @@ const reopened = await cjs.Stringbase.open({ filepath: './consumer.deon' });
 assert.equal((await reopened.collection('records').get('01')).value, 'kept');
 assert.equal((await reopened.collection('records').find(query().where(eq(field('id'), literal('01'))))).length, 1);
 await reopened.close();
+const rules = { version:'1', read:['/products/*'], write:['/products/*/description'], schema:{products:{description:{kind:'string'}}} };
+const workspace = await Workspace.create({directory:'./workspace',data:{products:[{id:'01',description:'old'}]},policy:rules,sourceRevision:'source-1',actor:'host'});
+const agentCjs = require('@plurid/stringbase/agent');
+await assert.rejects(agentCjs.Workspace.open({directory:'./workspace'}), {code:'STRINGBASE_LOCKED'});
+const tools = createAgentTools(workspace,{actor:'consumer'});
+const forked = await tools.call('stringbase_fork',{requestId:'fork'});
+assert.equal(forked.isError,false);
+const runId = forked.structuredContent.result.id;
+const planned = await workspace.agent(runId).plan({version:1,collection:'products',query:{version:1,steps:[]},mutation:{op:'merge',value:{description:'new'}}},{requestId:'plan'});
+await workspace.agent(runId).apply(planned.id,{requestId:'apply'});
+await workspace.close();
+const workspaceCjs = await agentCjs.Workspace.open({directory:'./workspace'});
+assert.equal((await workspaceCjs.agent(runId).query({version:1,collection:'products',query:{version:1,steps:[]}})).documents[0].description,'new');
+await workspaceCjs.close();
 assert.throws(() => require.resolve('@plurid/deon/pure'));
 assert.throws(() => require.resolve('@plurid/loque'));
 `);
@@ -47,15 +62,15 @@ assert.throws(() => require.resolve('@plurid/loque'));
     assert.equal(run(binary, ['--version'], consumer).trim(), manifest.version);
     assert.ok((await stat(join(consumer, 'node_modules/@plurid/stringbase/distribution/cli.mjs'))).mode & 0o111);
     for (const [extension, code] of [
-        ['mts', `import Stringbase, { query, field, literal, eq, type Document } from '@plurid/stringbase'; export const example = async () => { const db = await Stringbase.open({filepath:'example.deon'}); const results: readonly Document[] = await db.collection('records').find(query().where(eq(field('id'),literal('1')))); await db.close(); return results; };`],
-        ['cts', `import sb = require('@plurid/stringbase'); export const example = async () => { const db: sb.Stringbase = await sb.Stringbase.open({filepath:'example.deon'}); const results: readonly sb.Document[] = await db.collection('records').find(sb.query()); await db.close(); return results; };`],
+        ['mts', `import Stringbase, { query, field, literal, eq, type Document } from '@plurid/stringbase'; import {Workspace,type AgentProgram} from '@plurid/stringbase/agent'; const program:AgentProgram={version:1,collection:'products',query:query().toIR()}; export const agentExample=async()=>{const w=await Workspace.open({directory:'workspace'});const result=await w.agent('run').query(program);await w.close();return result;}; export const example = async () => { const db = await Stringbase.open({filepath:'example.deon'}); const results: readonly Document[] = await db.collection('records').find(query().where(eq(field('id'),literal('1')))); await db.close(); return results; };`],
+        ['cts', `import sb = require('@plurid/stringbase'); import agent = require('@plurid/stringbase/agent'); export const agentExample=async()=>{const w:agent.Workspace=await agent.Workspace.open({directory:'workspace'});await w.close();}; export const example = async () => { const db: sb.Stringbase = await sb.Stringbase.open({filepath:'example.deon'}); const results: readonly sb.Document[] = await db.collection('records').find(sb.query()); await db.close(); return results; };`],
     ]) await writeFile(join(consumer, `types.${extension}`), code);
     for (const [module, moduleResolution, files] of [['NodeNext', 'NodeNext', ['types.mts', 'types.cts']], ['ESNext', 'Bundler', ['types.mts']]]) {
         const config = join(consumer, `tsconfig.${moduleResolution}.json`);
         await writeFile(config, JSON.stringify({ compilerOptions: { target: 'ES2022', lib: ['ES2024'], module, moduleResolution, strict: true, noEmit: true, types: ['node'], typeRoots: [join(root, 'node_modules/@types')] }, files }));
         run(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '-p', config], consumer);
     }
-    console.log('Packed consumer passed: clean dependency-free production install, ESM/CJS, writer ownership, CLI, NodeNext/Bundler types, publint.');
+    console.log('Packed consumer passed: dependency-free ESM/CJS database and agent API, cross-format locks, CLI, NodeNext/Bundler types, publint.');
 } catch (error) {
     if (error && typeof error === 'object' && 'stderr' in error) console.error(String(error.stderr));
     throw error;

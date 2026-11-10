@@ -1,5 +1,6 @@
 packages:
   - packages/stringbase-javascript
+  - packages/stringbase-mcp
 allowBuilds:
   esbuild: true
   '@plurid/deon@https://codeload.github.com/plurid/deon/tar.gz/1fab7fb5bf32e03f4f491101c7aee6bf8b406c32#path:/packages/deon-javascript': true

@@ -25,7 +25,7 @@ export class FileStore {
         this.lockpath = `${filepath}.stringbase-lock`;
     }
 
-    static async open(options: StringbaseOptions, create: boolean): Promise<{ store: FileStore; data: DatabaseData }> {
+    static async open(options: StringbaseOptions, create: boolean, initialData?: DatabaseData): Promise<{ store: FileStore; data: DatabaseData }> {
         if (!options || typeof options !== 'object' || typeof options.filepath !== 'string' || !options.filepath.trim()
             || Object.keys(options).some(key => !['filepath', 'mode', 'maxFileBytes'].includes(key))
             || (options.mode !== undefined && options.mode !== 'readonly' && options.mode !== 'readwrite')
@@ -43,7 +43,7 @@ export class FileStore {
             if (create) {
                 try { await store.readBytes(); fail('FILE_EXISTS', `Database '${resolved}' already exists.`, { filepath: resolved }); }
                 catch (cause) { if (!hasCode(cause, 'ENOENT')) throw cause; }
-                const data = Object.freeze(Object.create(null)) as DatabaseData;
+                const data = initialData ?? Object.freeze(Object.create(null)) as DatabaseData;
                 await store.commit(data, true);
                 return { store, data };
             }

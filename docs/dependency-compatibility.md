@@ -7,7 +7,7 @@ the modern APIs used here. Installation therefore pins public Git revisions:
 | Dependency | Revision | Integration |
 | --- | --- | --- |
 | Deon | 1fab7fb5bf32e03f4f491101c7aee6bf8b406c32 | Pure source built and bundled |
-| Loque | 6bc497247cd862107cb68bfc3a6bbd99a0db50e0 | Deterministic engine built and bundled |
+| Loque | 6bc497247cd862107cb68bfc3a6bbd99a0db50e0 | Deterministic engine, programs and capabilities built and bundled |
 
 The pnpm workspace explicitly allows preparation of those exact Git artifacts
 for development. Both libraries are bundled into the published output and have
@@ -20,9 +20,11 @@ compatible Loque query builders can still supply the same public QueryIR.
 Deon's upstream package lacks a prepare/prepack hook and omits source from its
 package files. scripts/prepare-deon.mjs therefore fetches the exact public source
 archive and builds the pure entry in the installed development dependency.
-Root postinstall runs this preparation. For an offline development
-build, STRINGBASE_DEON_SOURCE can name a local Git checkout containing the exact
-commit; git archive reads the committed tree and ignores working-tree changes.
+Loque's pinned Git artifact also omits its built entry; scripts/prepare-loque.mjs
+builds its exact source revision. Root postinstall runs both through
+prepare:dependencies. For an offline source build, STRINGBASE_DEON_SOURCE and
+STRINGBASE_LOQUE_SOURCE can name local Git checkouts containing the exact commits;
+git archive reads the committed trees and ignores working-tree changes.
 No sibling checkout is modified. Internet access is needed for a clean default
 install, as for the other dependencies.
 
@@ -50,6 +52,11 @@ keep dependencies external: source preparation and pnpm's transitive Git policy
 otherwise prevent a normal production installation. There is one Deon implementation, built
 from its source; Stringbase does not maintain a duplicate parser or serializer.
 The existing project LICENSE and LICENSE.deon cover the distributed package.
+
+The optional @plurid/stringbase-mcp package has runtime dependencies on Stringbase
+and the pinned official MCP SDK. It does not change the core package's
+dependency-free installation. Both packed packages are tested in an isolated
+production consumer, including a real SDK stdio connection and public types.
 
 Before replacing these pins with registry releases, verify the API probes, remove
 only fixes present upstream, and rerun the complete value corpus and isolated

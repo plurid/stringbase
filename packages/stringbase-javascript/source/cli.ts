@@ -9,11 +9,13 @@ import { fields } from './model';
 import { parseValue } from './storage/codec';
 import { parseLocator } from './locator';
 import type { QueryOptions, ReadOptions } from './types';
+import { workspaceMain } from './workspace-cli';
 
 declare const __STRINGBASE_VERSION__: string;
 const help = `Usage: stringbase <command> <file.deon> [arguments] [options]
 
 Commands:
+  workspace <command> <dir>      agent workspaces; use workspace --help
   init                          create an empty database
   collections                   list collections
   create-collection <name>      create a collection
@@ -50,6 +52,7 @@ async function payload(file: string | undefined): Promise<unknown> {
 }
 
 async function main(): Promise<number> {
+    if (process.argv[2] === 'workspace') return workspaceMain(process.argv.slice(3));
     let db: Stringbase | undefined;
     try {
         const { positionals, values } = parseArgs({ allowPositionals: true, options: {

@@ -1,0 +1,16 @@
+{
+  "version": "catalog-1",
+  "read": ["/products/*"],
+  "write": ["/products/*/description", "/products/*/category", "/products/*/tags"],
+  "schema": {
+    "products": {
+      "title": { "kind": "string", "required": true },
+      "description": { "kind": "string", "required": true, "minLength": 1, "maxLength": 400 },
+      "category": { "kind": "string", "enum": ["home", "tools"] },
+      "tags": { "kind": "strings", "maxLength": 8 }
+    }
+  },
+  "maxMatches": 100,
+  "maxOperations": 256,
+  "maxResults": 50
+}

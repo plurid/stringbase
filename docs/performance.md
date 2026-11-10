@@ -33,3 +33,46 @@ consumer covering ESM/CommonJS, CLI, and NodeNext/Bundler type resolution.
 Statement coverage was 90.87%, branch coverage 86.65%, and line coverage 95.38%.
 The macOS/Linux and Node 22/24/26 CI matrix is configured; those additional runners
 were not executed from this local session.
+
+## Agent workspace measurements
+
+Measured separately after the agent implementation, on the same macOS arm64 and
+Node.js v26.8.2 environment. Run `pnpm --filter @plurid/stringbase benchmark:workspaces`.
+Each dataset runs in its own process and temporary directory. No other verification
+commands ran during this measurement. These are single-run observations with warm
+filesystem data and the workspace's bounded immutable snapshot cache, not latency
+or capacity guarantees.
+
+The workflow creates a catalog, forks five alternative runs, queries ten records,
+plans and applies one ten-record update, submits it for host review and approval,
+promotes it, and reopens the workspace. Fork timings include five sequential durable
+manifest publications. Peak RSS covers the complete child process, including setup,
+serialization, validation, and reopening history; it is not steady-state memory.
+
+| Records | Initial workspace bytes | Five forks ms | Query ms | Plan ten ms | Apply ten ms | Peak RSS MiB |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1,000 | 180,028 | 55.73 | 6.63 | 23.27 | 53.13 | 184.4 |
+| 10,000 | 1,809,028 | 54.85 | 31.96 | 101.70 | 329.26 | 526.8 |
+
+| Records | Create ms | Review ms | Promote ms | Reopen ms | Final workspace bytes |
+| --- | --- | --- | --- | --- | --- |
+| 1,000 | 63.82 | 2.98 | 16.09 | 36.55 | 376,863 |
+| 10,000 | 283.18 | 20.99 | 38.05 | 353.82 | 3,634,863 |
+
+Both datasets retained one snapshot after five forks; only metadata grew, by
+3,903 bytes. Applying the update created a second complete snapshot. Promotion
+reused it, so the complete workflow retained two snapshot objects. This is shared
+immutable snapshot branching; changed snapshots still rewrite the entire dataset.
+
+Start pilots with approximately 1,000 selected records, then measure the actual
+catalog fields and run history before expanding. The 10,000-record observation
+shows substantial memory overhead even for a small encoded dataset. The 64 MiB
+snapshot limit is a parsing/storage guard, not demonstrated working capacity.
+Queries scan collections; manifest publication and reopen work grow with retained
+history. No distributed-storage or large-database performance claim is implied.
+
+The final local `pnpm verify` passed 86 database/workspace tests and two real MCP
+tests, including process termination before/after publication, policy revocation,
+stale approvals, receipts, CLI flows, executable docs, the catalog reference, and
+isolated production installs of both packages. Statement coverage was 92.54%,
+branch coverage 87.51%, function coverage 97.87%, and line coverage 97.08%.

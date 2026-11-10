@@ -42,10 +42,13 @@
     "check:docs": "node scripts/check-docs.mjs",
     "check:package": "node scripts/check-package.mjs",
     "benchmark": "node scripts/benchmark.mjs",
-    "verify": "pnpm lint && pnpm typecheck && pnpm build && pnpm test:coverage && pnpm check:docs && pnpm check:package",
+    "verify": "pnpm lint && pnpm typecheck && pnpm build && pnpm test:coverage && pnpm check:docs && pnpm check:package && pnpm check:catalog",
     "prepack": "pnpm build",
     "prepublishOnly": "pnpm verify",
-    "prepare:deon": "node scripts/prepare-deon.mjs"
+    "prepare:deon": "node scripts/prepare-deon.mjs",
+    "prepare:dependencies": "node scripts/prepare-deon.mjs && node scripts/prepare-loque.mjs",
+    "benchmark:workspaces": "node scripts/benchmark-workspaces.mjs",
+    "check:catalog": "node ../../examples/catalog/run.mjs"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
@@ -58,7 +61,8 @@
     "typescript-eslint": "8.70.1",
     "vitest": "5.0.1",
     "@plurid/deon": "github:plurid/deon#1fab7fb5bf32e03f4f491101c7aee6bf8b406c32&path:/packages/deon-javascript",
-    "@plurid/loque": "github:plurid/loque#6bc497247cd862107cb68bfc3a6bbd99a0db50e0&path:/packages/loque-javascript"
+    "@plurid/loque": "github:plurid/loque#6bc497247cd862107cb68bfc3a6bbd99a0db50e0&path:/packages/loque-javascript",
+    "ajv": "8.20.0"
   },
   "type": "module",
   "types": "./distribution/index.d.mts",
@@ -74,6 +78,16 @@
         "default": "./distribution/index.cjs"
       }
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./agent": {
+      "import": {
+        "types": "./distribution/agent.d.mts",
+        "default": "./distribution/agent.mjs"
+      },
+      "require": {
+        "types": "./distribution/agent.d.cts",
+        "default": "./distribution/agent.cjs"
+      }
+    }
   }
 }

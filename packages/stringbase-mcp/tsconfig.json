@@ -1,0 +1,7 @@
+{
+  "extends": "../stringbase-javascript/tsconfig.json",
+  "include": [
+    "source/**/*.ts",
+    "*.mts"
+  ]
+}

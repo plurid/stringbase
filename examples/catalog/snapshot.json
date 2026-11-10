@@ -1,0 +1,6 @@
+{
+  "products": [
+    { "id": "01", "title": "Desk lamp", "description": "A lamp", "category": "home", "tags": ["lighting"] },
+    { "id": "02", "title": "Hand drill", "description": "A drill", "category": "tools", "tags": [] }
+  ]
+}

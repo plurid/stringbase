@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "collection": "products",
+  "query": {
+    "version": 1,
+    "steps": [
+      { "op": "where", "predicate": { "op": "eq", "left": { "op": "field", "path": ["id"] }, "right": { "op": "literal", "value": "01" } } }
+    ]
+  },
+  "mutation": { "op": "merge", "value": { "description": "An adjustable desk lamp for focused task lighting.", "tags": ["lighting", "desk"] } }
+}

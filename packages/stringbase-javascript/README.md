@@ -2,6 +2,13 @@
 
 An embedded document database stored in a human-readable `.deon` file.
 
+Agent workspaces add isolated runs, permission-scoped Loque plans, review and
+approval, durable revisions, and guarded exports. Start with the
+[agent workspace guide](https://github.com/plurid/stringbase/blob/master/docs/agent-workspaces.md),
+[catalog example](https://github.com/plurid/stringbase/tree/master/examples/catalog),
+and [business hypothesis](https://github.com/plurid/stringbase/blob/master/docs/agent-business-case.md).
+The optional `@plurid/stringbase-mcp` package exposes agent operations over stdio.
+
 **Unreleased modernization: `0.0.0-1`.** This checkout implements the new API;
 older registry releases still expose the prototype. See the
 [modernization plan](https://github.com/plurid/stringbase/blob/master/docs/modernization-plan.md)
@@ -23,8 +30,8 @@ pnpm install --frozen-lockfile
 pnpm verify
 ```
 
-Installation builds a pinned public Deon source revision in a temporary directory.
-Loque is a pinned public Git subdirectory build dependency. No neighboring
+Installation builds pinned public Deon and Loque source revisions in temporary
+directories. Both are public Git subdirectory build dependencies. No neighboring
 repositories are required or modified. Both implementations
 are included in the built package, which has no runtime dependencies. This avoids
 requiring consumers to build Git subdependencies or install the older registry APIs. Details:

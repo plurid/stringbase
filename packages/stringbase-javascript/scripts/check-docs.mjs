@@ -25,6 +25,13 @@ try {
         checked++;
     }
     assert.ok(checked >= 2, 'Expected executable examples and a Deon example');
+    const agentGuide = await readFile(resolve(root, '../../docs/agent-workspaces.md'), 'utf8');
+    for (const match of agentGuide.matchAll(/```javascript\n([\s\S]*?)```/g)) {
+        const filename = join(temporary, `agent-example-${checked}.mjs`);
+        await writeFile(filename, match[1]);
+        execFileSync(process.execPath, [filename], { cwd: temporary, stdio: 'pipe' });
+        checked++;
+    }
     const batch = await readFile(resolve(root, '../../docs/batch-format.md'), 'utf8');
     for (const match of batch.matchAll(/```json\n([\s\S]*?)```/g)) validateBatch(JSON.parse(match[1]));
     console.log(`Documentation checks passed (${checked} README examples and batch payloads).`);
