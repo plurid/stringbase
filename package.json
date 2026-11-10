@@ -1,0 +1,14 @@
+{
+  "name": "stringbase-workspace",
+  "private": true,
+  "packageManager": "pnpm@12.4.1",
+  "scripts": {
+    "build": "pnpm --filter @plurid/stringbase build",
+    "dev": "pnpm --filter @plurid/stringbase dev",
+    "test": "pnpm --filter @plurid/stringbase test",
+    "typecheck": "pnpm --filter @plurid/stringbase typecheck",
+    "lint": "pnpm --filter @plurid/stringbase lint",
+    "verify": "pnpm --filter @plurid/stringbase verify",
+    "postinstall": "pnpm --filter @plurid/stringbase prepare:deon"
+  }
+}

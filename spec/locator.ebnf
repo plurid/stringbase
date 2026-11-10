@@ -1,0 +1,24 @@
+(* Stringbase locator v1; syntax compiles to deterministic Loque QueryIR. *)
+locator     = collection, [ ".", disjunction ];
+disjunction = conjunction, { "|", conjunction };
+conjunction = primary, { "&", primary };
+primary     = comparison | "(", disjunction, ")";
+comparison  = field, operator, operand;
+field       = name | "{", path, "}";
+path        = name, { ".", name | "[", (quoted | index), "]" };
+operator    = ":" | "!:" | "<" | "<=" | ">" | ">=";
+operand     = quoted | word, { ".", word };
+name        = word | quoted;
+collection  = name; (* decoded [A-Za-z_][A-Za-z0-9_-]* *)
+index       = digit, { digit }; (* nonnegative safe integer; quoted digits are map keys *)
+quoted      = "'", { literal | escape }, "'";
+escape      = "\\", ( "'" | "\\" | "n" | "r" | "t" | unicode | other );
+unicode     = "u{", hex, [hex], [hex], [hex], [hex], [hex], "}";
+(* Unicode escapes must name a scalar value. Unknown escapes retain the backslash.
+   word excludes quotes, ASCII whitespace, and .{}[]()&|:!<>=.
+   Dots inside a bare operand must be adjacent to both neighboring words.
+   Whitespace may separate other tokens; a quoted value cannot cross a raw newline.
+   Bare operands are strings in the raw view. In the typed view they use Deon's
+   conservative typer, except ID comparisons, whose operands remain strings.
+   Boundaries: 16 KiB source, 256 comparisons, 32 nested Boolean groups.
+*)

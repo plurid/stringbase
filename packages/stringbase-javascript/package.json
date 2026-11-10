@@ -1,70 +1,79 @@
 {
-    "name": "@plurid/stringbase",
-    "version": "0.0.0-0",
-    "description": "Human-Readable Database Based on Deon",
-    "keywords": [
-        "database",
-        "stringbase"
-    ],
-    "author": "ly3xqhl8g9 <ly3xqhl8g9@plurid.com> (https://plurid.com)",
-    "license": "SEE LICENSE IN LICENSE",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/plurid/stringbase"
+  "name": "@plurid/stringbase",
+  "version": "0.0.0-1",
+  "description": "An embedded document database stored in human-readable Deon",
+  "keywords": [
+    "database",
+    "stringbase"
+  ],
+  "author": "ly3xqhl8g9 <ly3xqhl8g9@plurid.com> (https://plurid.com)",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/plurid/stringbase"
+  },
+  "bugs": {
+    "email": "source@plurid.com",
+    "url": "https://github.com/plurid/stringbase/issues"
+  },
+  "homepage": "https://github.com/plurid/stringbase/tree/master/packages/stringbase-javascript",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "main": "./distribution/index.cjs",
+  "module": "./distribution/index.mjs",
+  "bin": {
+    "stringbase": "./distribution/cli.mjs"
+  },
+  "files": [
+    "distribution"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "test": "pnpm build && vitest run",
+    "test:coverage": "vitest run --coverage",
+    "check:docs": "node scripts/check-docs.mjs",
+    "check:package": "node scripts/check-package.mjs",
+    "benchmark": "node scripts/benchmark.mjs",
+    "verify": "pnpm lint && pnpm typecheck && pnpm build && pnpm test:coverage && pnpm check:docs && pnpm check:package",
+    "prepack": "pnpm build",
+    "prepublishOnly": "pnpm verify",
+    "prepare:deon": "node scripts/prepare-deon.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.4",
+    "@vitest/coverage-v8": "5.0.1",
+    "eslint": "10.11.0",
+    "publint": "0.3.24",
+    "tsdown": "0.23.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.70.1",
+    "vitest": "5.0.1",
+    "@plurid/deon": "github:plurid/deon#1fab7fb5bf32e03f4f491101c7aee6bf8b406c32&path:/packages/deon-javascript",
+    "@plurid/loque": "github:plurid/loque#6bc497247cd862107cb68bfc3a6bbd99a0db50e0&path:/packages/loque-javascript"
+  },
+  "type": "module",
+  "types": "./distribution/index.d.mts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./distribution/index.d.mts",
+        "default": "./distribution/index.mjs"
+      },
+      "require": {
+        "types": "./distribution/index.d.cts",
+        "default": "./distribution/index.cjs"
+      }
     },
-    "bugs": {
-        "email": "source@plurid.com",
-        "url": "https://github.com/plurid/stringbase/issues"
-    },
-    "homepage": "https://github.com/plurid/stringbase/blob/master/packages/stringbase-cli/README.md",
-    "publishConfig": {
-        "registry": "https://registry.npmjs.org/",
-        "access": "public"
-    },
-    "engines": {
-        "node": ">=12",
-        "npm": ">=6"
-    },
-    "main": "distribution/index.js",
-    "module": "distribution/index.es.js",
-    "typings": "distribution/index.d.ts",
-    "bin": {
-        "stringbase": "binder/stringbase"
-    },
-    "files": [
-        "distribution",
-        "binder"
-    ],
-    "preferGlobal": true,
-    "scripts": {
-        "test": "jest -c ./configurations/jest.config.js --coverage --verbose  ./source",
-        "test.suite": "jest -c ./configurations/jest.config.js --coverage --verbose",
-        "start": "rollup -c ./scripts/rollup.config.ts -w",
-        "build.removeTests": "rm -rf `find ./distribution/ -type d -name __tests__`",
-        "build.development": "rollup -c ./scripts/rollup.config.ts && yarn build.removeTests",
-        "build": "rollup -c ./scripts/rollup.config.ts && yarn build.removeTests",
-        "prebuild": "rm -rf distribution",
-        "prepublishOnly": "yarn build"
-    },
-    "dependencies": {
-        "@plurid/deon": "^0.0.0-10",
-        "@plurid/loque": "^0.0.0-0",
-        "commander": "^10.0.1"
-    },
-    "devDependencies": {
-        "@rollup/plugin-commonjs": "^24.1.0",
-        "@rollup/plugin-json": "^6.0.0",
-        "@types/node": "^18.16.1",
-        "@typescript-eslint/eslint-plugin": "^5.59.1",
-        "@typescript-eslint/parser": "^5.59.1",
-        "@zerollup/ts-transform-paths": "^1.7.18",
-        "eslint": "^8.39.0",
-        "jest": "^29.5.0",
-        "rollup": "^3.21.0",
-        "rollup-plugin-typescript2": "^0.34.1",
-        "ts-jest": "^29.1.0",
-        "ts-node": "^10.9.1",
-        "ttypescript": "^1.5.15",
-        "typescript": "^5.0.4"
-    }
+    "./package.json": "./package.json"
+  }
 }

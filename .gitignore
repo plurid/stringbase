@@ -176,3 +176,5 @@ dump.rdb
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+.pnpm-store/

@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-
-const stringbase = require('../distribution/index.js');
-
-stringbase.cli();
