@@ -178,3 +178,6 @@ ehthumbs.db
 Thumbs.db
 
 .pnpm-store/
+
+# Local model trial data and transcripts
+/artifacts/codex-trials/

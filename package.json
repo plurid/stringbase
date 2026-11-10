@@ -9,6 +9,7 @@
     "typecheck": "pnpm --filter @plurid/stringbase typecheck && pnpm --filter @plurid/stringbase-mcp typecheck",
     "lint": "pnpm --filter @plurid/stringbase lint && pnpm --filter @plurid/stringbase-mcp lint",
     "verify": "pnpm --filter @plurid/stringbase verify && pnpm --filter @plurid/stringbase-mcp verify && node scripts/check-mcp-package.mjs",
-    "postinstall": "pnpm --filter @plurid/stringbase prepare:dependencies"
+    "postinstall": "pnpm --filter @plurid/stringbase prepare:dependencies",
+    "trial:codex": "node examples/catalog/codex-trial.mjs"
   }
 }

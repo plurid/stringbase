@@ -207,3 +207,40 @@ access is outside tool capability enforcement. Hosted identity, remote sharing,
 tamper-resistant audit storage, and automatic publication are later milestones.
 
 See [business validation](agent-business-case.md) and [measurements](performance.md).
+
+## Live Codex trial
+
+The catalog example above uses a fixed program. For an actual model to discover
+and use the MCP tools, run:
+
+```sh
+pnpm build
+codex login status
+pnpm trial:codex
+```
+
+This opt-in command uses the existing Codex CLI sign-in and its default model.
+It makes live model calls and consumes the account's usage allowance. It is
+separate from `pnpm verify`, whose runner tests use an explicitly simulated agent.
+Use `--model <model>` to choose a model and `--timeout <seconds>` to bound the run
+(180 seconds by default; 600 maximum). `--output <new-directory>` preserves a
+trial in a chosen directory; the default is a private temporary directory.
+
+The host imports the two sample products, creates one granted run, and allows
+description edits only. Codex receives per-invocation MCP configuration, an empty
+working directory, a read-only command sandbox, and disabled shell/delegation
+tools. The existing Codex configuration is not edited. MCP execution uses its
+normal tool host; the Stringbase tools are the data-access boundary.
+
+The runner saves `report.json`, `review.md`, the final model response, JSONL
+events, and CLI diagnostics. It checks the actual stored proposal, run ownership,
+field changes, validators, both products, accepted head, and observed tool calls.
+Passing sets `status: ready_for_review`; it does not approve, promote, export, or
+publish the proposal. Inspect `review.md` and use the trusted host CLI for any
+subsequent reviewer decision. Failures retain the workspace and available logs.
+
+The CLI must already be installed and signed in. The command uses official
+[Codex non-interactive execution](https://learn.chatgpt.com/docs/non-interactive-mode)
+and [local MCP configuration](https://learn.chatgpt.com/docs/extend/mcp?surface=cli).
+CLI versions may expose different configuration features; the tested version
+was 0.167.0.
